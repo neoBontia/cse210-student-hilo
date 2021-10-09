@@ -1,1 +1,4 @@
-# TODO: Add entry point code here
+from game.dealer import Dealer
+
+game = Dealer()
+game.play()
