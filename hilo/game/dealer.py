@@ -1,5 +1,5 @@
 import random
-from game import Player
+from game.player import Player
 
 class Dealer:
     """
@@ -26,6 +26,7 @@ class Dealer:
         self.curr_card = 0
         self.points = 300
         self.player = Player()
+        self.can_play = True
 
     def display_card(self):
         """
@@ -39,6 +40,18 @@ class Dealer:
 
         print(f"The card is: {self.prev_card}")
 
+    def check_answer(self):
+        if (self.prev_card < self.curr_card):
+            if(self.player.get_guess() == 'h' or self.player.get_guess() == 'H'):
+                return True
+            else:
+                return False
+        elif self.prev_card > self.curr_card:
+            if self.player.get_guess() == 'L' or self.player.get_guess() == 'l':
+                return True
+            else:
+                return False
+
     def calculate(self):
         """
         This method calculates the points of the player based on the result of
@@ -48,7 +61,7 @@ class Dealer:
         Attribute:
         self (Dealer): an instance of Dealer.
         """
-        if self.player.update():
+        if self.check_answer():
             self.points += 100
             print(f"Your score is: {self.points}")
         else:
@@ -75,17 +88,25 @@ class Dealer:
         """
         return self.curr_card
 
-    """def play(self):
-        \"""
+    def will_play(self):
+        if self.points <= 0:
+            self.can_play = False
+        if self.player.get_play() == "N" or self.player.get_play() == "n":
+            self.can_play = False
+
+    def play(self):
+        """
         This method calls the appropriate methods to play the game while the player
         can still play.
 
         Attribute:
         self (Dealer): an instance of Dealer.
-        \"""
-        while self.player.can_play:
+        """
+        while self.can_play:
             self.display_card()
             self.player.guess_card()
-            self.player.check_answer()
+            print(f"Current card: {self.curr_card}")
             self.calculate()
-            """
+            if self.points > 0:
+                self.player.want_to_play()
+            self.will_play()
