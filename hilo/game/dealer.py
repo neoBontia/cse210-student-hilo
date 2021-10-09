@@ -1,6 +1,7 @@
 import random
 from game.player import Player
 
+
 class Dealer:
     """
     This class is the dealer or the director of the HiLo game.
@@ -110,3 +111,7 @@ class Dealer:
             if self.points > 0:
                 self.player.want_to_play()
             self.will_play()
+
+        print()
+        print('***       GAME OVER     ***')
+        print("Let's play again next time!")
